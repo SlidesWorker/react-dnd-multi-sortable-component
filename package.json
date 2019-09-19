@@ -1,0 +1,8 @@
+{
+  "name": "react-dnd-multi-sortable-component",
+  "version": "0.0.1-dev",
+  "main": "index.js",
+  "repository": "git@github.com:SlidesWorker/react-dnd-multi-sortable-component.git",
+  "author": "Clemens Sahs <clemens.sahs@slides-worker.de>",
+  "license": "MIT"
+}
