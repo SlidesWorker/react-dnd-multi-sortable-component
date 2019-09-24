@@ -1,7 +1,5 @@
 import React, { useRef } from "react";
-
-import { useDrag, useDrop, DragSource, DropTarget } from "react-dnd";
-import R from "ramda";
+import { useDrag, useDrop } from "react-dnd";
 
 const initStyle = {
   border: "dashed 1px black",

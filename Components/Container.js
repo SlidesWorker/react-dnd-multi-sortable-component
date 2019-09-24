@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-// import update from "react/lib/update";
+import React from "react";
 
 import R from "ramda";
 import { DropTarget } from "react-dnd";
