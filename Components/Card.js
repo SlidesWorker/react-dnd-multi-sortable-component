@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 
 import { useDrag, useDrop, DragSource, DropTarget } from "react-dnd";
 import R from "ramda";
-import ItemTypes from "../ItemTypes";
 
 const initStyle = {
   border: "dashed 1px black",
