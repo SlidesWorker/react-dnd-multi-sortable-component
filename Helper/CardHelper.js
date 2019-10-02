@@ -1,17 +1,5 @@
-import React, { useRef } from "react";
-import { useDrag, useDrop } from "react-dnd";
-
-const initStyle = {
-  border: "dashed 1px black",
-  padding: "5px",
-  width: "80px",
-  height: "20px",
-  marginBottom: "5px",
-  cursor: "move"
-};
-
-const createDropSpec = (props, ref) => ({
-  hover: (dragObject, monitor) => {
+export const createCardHover = (props, ref) => {
+  return (dragObject, monitor) => {
     if (!ref.current) {
       return;
     }
@@ -60,49 +48,7 @@ const createDropSpec = (props, ref) => ({
     // but it's good here for the sake of performance
     // to avoid expensive index searches.
     monitor.getItem().index = hoverIndex;
-  }
-});
-
-const createDragSpec = props => ({
-  end: (item, monitor) => {
-    const dropResult = monitor.getDropResult();
-
-    if (dropResult && dropResult.listId !== item.listId) {
-      props.onRemoveCard(item);
-    }
-  }
-});
-
-const Card = props => {
-  const ref = useRef(null);
-  const [, connectDropTarget] = useDrop({
-    accept: props.parentAccept,
-    ...createDropSpec(props, ref)
-  });
-  const item = {
-    type: props.type,
-    ...props
   };
-  const [{ isDragging }, connectDragSource] = useDrag({
-    item,
-    ...createDragSpec(props),
-    collect: monitor => ({
-      isDragging: monitor.isDragging()
-    })
-  });
-
-  connectDragSource(connectDropTarget(ref));
-  return (
-    <div
-      ref={ref}
-      style={{
-        ...initStyle,
-        opacity: isDragging ? 0.2 : 1
-      }}
-    >
-      {props.text}
-    </div>
-  );
 };
 
-export default Card;
+export default { createCardHover };

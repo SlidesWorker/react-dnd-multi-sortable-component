@@ -2,15 +2,15 @@ import React, { useRef, useState } from "react";
 
 import { useDrop } from "react-dnd";
 
-import DefaultContainerWrapper from "./ContainerWrapper";
+import DefaultCard from "./Card";
+import DefaultContainerWrapper from "./ContainerCardWrapper";
 import {
   refreshIndex,
   createAddItems,
   createHandleMoveCard,
   createHandleRemoveCard,
-  getCardComponent,
   createDrop
-} from "../Helper/ContainerHelper";
+} from "../../Helper/ContainerHelper";
 
 const canDrop = (item, monitor) => {
   return true;
@@ -21,7 +21,7 @@ const createDropSpec = (props, ref) => ({
   drop: createDrop(props, ref)
 });
 
-const Container = props => {
+const ContainerCard = props => {
   const ref = useRef(null);
   const [items, setItem] = useState(refreshIndex(props.items));
 
@@ -41,6 +41,7 @@ const Container = props => {
     }
   });
 
+  const CardComponent = props.cardComponent || DefaultCard;
   const ContainerWrapper =
     props.containerWrapperComponent || DefaultContainerWrapper;
 
@@ -53,8 +54,6 @@ const Container = props => {
           key: item.text,
           listId: props.uuid
         };
-        const CardComponent = getCardComponent(props, item);
-
         return (
           <CardComponent
             {...itemProps}
@@ -68,4 +67,4 @@ const Container = props => {
   );
 };
 
-export default Container;
+export default ContainerCard;
