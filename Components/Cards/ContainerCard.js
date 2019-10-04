@@ -2,13 +2,13 @@ import React, { useRef, useState } from "react";
 
 import { useDrop } from "react-dnd";
 
-import DefaultCard from "./Card";
 import DefaultContainerWrapper from "./ContainerCardWrapper";
 import {
   refreshIndex,
   createAddItems,
   createHandleMoveCard,
   createHandleRemoveCard,
+  getCardComponent,
   createDrop
 } from "../../Helper/ContainerHelper";
 
@@ -41,7 +41,6 @@ const ContainerCard = props => {
     }
   });
 
-  const CardComponent = props.cardComponent || DefaultCard;
   const ContainerWrapper =
     props.containerWrapperComponent || DefaultContainerWrapper;
 
@@ -54,6 +53,8 @@ const ContainerCard = props => {
           key: item.text,
           listId: props.uuid
         };
+        const CardComponent = getCardComponent(props, item);
+
         return (
           <CardComponent
             {...itemProps}

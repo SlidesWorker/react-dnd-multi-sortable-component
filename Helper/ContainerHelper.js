@@ -25,22 +25,19 @@ export const createHandleRemoveCard = setState => item => {
 };
 
 export const createDrop = (props, ref) => (dragObject, monitor) => {
-  const sourceObj = monitor.getItem();
-
-  if (dragObject.listId !== props.listId) {
-    console.log(sourceObj, dragObject);
-
+  if (dragObject.listId !== props.uuid) {
     props.addItems(dragObject);
   }
 
   return {
-    move: props.listId === dragObject.listId,
-    listId: props.listId
+    move: props.uuid === dragObject.listId,
+    listId: props.uuid
   };
 };
 
 export const getCardComponent = (props, item) => {
   let cardComponent = DefaultCard;
+
   if (
     props.cardTypeMap &&
     item.type &&

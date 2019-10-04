@@ -51,7 +51,8 @@ const Container = props => {
         const itemProps = {
           ...item,
           key: item.text,
-          listId: props.uuid
+          listId: props.uuid,
+          cardTypeMap: props.cardTypeMap
         };
         const CardComponent = getCardComponent(props, item);
 
