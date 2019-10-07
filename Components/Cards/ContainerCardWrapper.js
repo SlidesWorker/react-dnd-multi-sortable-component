@@ -1,6 +1,8 @@
 import React from "react";
 
 const initStyle = {
+  display: "flex",
+  flexWrap: "wrap",
   margin: "5px",
   border: "solid 1px black",
   padding: "5px",
@@ -16,7 +18,8 @@ const DefaultContainerCardWrapper = (props, ref) => {
       ? props.canDropHere
         ? "yellow"
         : "red"
-      : "transparent"
+      : "transparent",
+    opacity: props.isDragging ? 0.2 : 1
   };
   return (
     <div style={style} ref={ref}>

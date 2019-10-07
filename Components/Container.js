@@ -25,9 +25,9 @@ const Container = props => {
   const ref = useRef(null);
   const [items, setItem] = useState(refreshIndex(props.items));
 
-  const addItems = createAddItems(setItem);
-  const handleMoveCard = createHandleMoveCard(setItem);
-  const handleRemoveCard = createHandleRemoveCard(setItem);
+  const addItems = createAddItems(setItem, props);
+  const handleMoveCard = createHandleMoveCard(setItem, props);
+  const handleRemoveCard = createHandleRemoveCard(setItem, props);
 
   const [, connectDropTarget] = useDrop({
     ...createDropSpec({ ...props, addItems }, ref),
@@ -50,7 +50,8 @@ const Container = props => {
       {items.map((item, index) => {
         const itemProps = {
           ...item,
-          key: item.text,
+          key: item.uuid,
+          index,
           listId: props.uuid,
           cardTypeMap: props.cardTypeMap
         };

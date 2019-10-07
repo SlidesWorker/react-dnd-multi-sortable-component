@@ -2,11 +2,12 @@ import React from "react";
 
 const initStyle = {
   display: "flex",
+  flexWrap: "wrap",
   margin: "5px",
   border: "solid 1px black",
   padding: "5px",
   width: "300px",
-  height: "150px",
+  height: "250px",
   background: "transparent"
 };
 

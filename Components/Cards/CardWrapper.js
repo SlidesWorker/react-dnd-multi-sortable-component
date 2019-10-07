@@ -6,7 +6,8 @@ const initStyle = {
   width: "80px",
   height: "20px",
   marginBottom: "5px",
-  cursor: "move"
+  cursor: "move",
+  flexGrow: 1
 };
 
 const DefaultCardWrapper = (props, ref) => {

@@ -1,37 +1,54 @@
 import React, { useRef, useState } from "react";
 
-import { useDrop } from "react-dnd";
+import { useDrop, useDrag } from "react-dnd";
 
-import DefaultContainerWrapper from "./ContainerCardWrapper";
 import {
   refreshIndex,
   createAddItems,
   createHandleMoveCard,
   createHandleRemoveCard,
   getCardComponent,
+  getContainerWrapperComponent,
   createDrop
 } from "../../Helper/ContainerHelper";
+import { createCardHover } from "../../Helper/CardHelper";
 
 const canDrop = (item, monitor) => {
   return true;
 };
 
-const createDropSpec = (props, ref) => ({
+const createDropCardSpec = (props, ref) => ({
   canDrop,
   drop: createDrop(props, ref)
+});
+
+const createDropContainerSpec = (props, ref) => ({
+  hover: createCardHover(props, ref)
+});
+
+const createDragSpec = props => ({
+  end: (item, monitor) => {
+    const dropResult = monitor.getDropResult();
+
+    if (dropResult && dropResult.listId !== item.listId) {
+      props.onRemoveCard(item);
+    }
+  }
 });
 
 const ContainerCard = props => {
   const ref = useRef(null);
   const [items, setItem] = useState(refreshIndex(props.items));
 
-  const addItems = createAddItems(setItem);
-  const handleMoveCard = createHandleMoveCard(setItem);
-  const handleRemoveCard = createHandleRemoveCard(setItem);
+  // create Handle function
+  const addItems = createAddItems(setItem, props);
+  const handleMoveCard = createHandleMoveCard(setItem, props);
+  const handleRemoveCard = createHandleRemoveCard(setItem, props);
 
-  const [, connectDropTarget] = useDrop({
-    ...createDropSpec({ ...props, addItems }, ref),
-    accept: props.accept,
+  // drop Card target
+  const [containerWrapperProps, connectDropCardTarget] = useDrop({
+    ...createDropCardSpec({ ...props, addItems }, ref),
+    accept: [props.accept],
     collect: monitor => {
       return {
         isOver: monitor.isOver(),
@@ -41,17 +58,48 @@ const ContainerCard = props => {
     }
   });
 
-  const ContainerWrapper =
-    props.containerWrapperComponent || DefaultContainerWrapper;
+  // drop container target
+  const [, connectDropContainerTarget] = useDrop({
+    ...createDropContainerSpec({ ...props }, ref),
+    accept: [props.parentAccept]
+  });
 
-  connectDropTarget(ref);
+  const item = {
+    type: props.type,
+    ...props
+  };
+
+  // drag source
+  const [{ isDragging }, connectDragSource] = useDrag({
+    item,
+    ...createDragSpec(props),
+    collect: monitor => ({
+      isDragging: monitor.isDragging()
+    })
+  });
+
+  // default wrapper
+
+  const ContainerWrapper = getContainerWrapperComponent(props);
+
+  // connect hooks
+  connectDropContainerTarget(connectDragSource(connectDropCardTarget(ref)));
+
+  // render
   return (
-    <ContainerWrapper {...props} ref={ref}>
+    <ContainerWrapper
+      {...props}
+      {...containerWrapperProps}
+      ref={ref}
+      isDragging={isDragging}
+    >
       {items.map((item, index) => {
         const itemProps = {
           ...item,
-          key: item.text,
-          listId: props.uuid
+          key: item.uuid,
+          index,
+          listId: props.uuid,
+          cardTypeMap: props.cardTypeMap
         };
         const CardComponent = getCardComponent(props, item);
 

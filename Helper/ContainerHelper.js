@@ -1,4 +1,5 @@
 import DefaultCard from "../Components/Cards/Card";
+import DefaultContainerWrapper from "../Components/ContainerWrapper";
 
 import R from "ramda";
 
@@ -9,15 +10,20 @@ export const refreshIndex = list => {
   }));
 };
 
-export const createAddItems = setState => newItem => {
+export const createAddItems = (setState, props) => newItem => {
   setState(oldItems => refreshIndex([...oldItems, newItem]));
 };
 
-export const createHandleMoveCard = setState => (dragIndex, hoverIndex) => {
-  setState(oldItems => R.move(dragIndex, hoverIndex, oldItems));
+export const createHandleMoveCard = (setState, props) => (
+  dragIndex,
+  hoverIndex
+) => {
+  setState(oldItems => {
+    return R.move(dragIndex, hoverIndex, oldItems);
+  });
 };
 
-export const createHandleRemoveCard = setState => item => {
+export const createHandleRemoveCard = (setState, props) => item => {
   setState(oldItems => {
     return refreshIndex(R.remove(item.index, 1, oldItems));
   });
@@ -35,22 +41,34 @@ export const createDrop = (props, ref) => (dragObject, monitor) => {
   };
 };
 
-export const getCardComponent = (props, item) => {
-  let cardComponent = DefaultCard;
-
-  if (
-    props.cardTypeMap &&
-    item.type &&
-    props.cardTypeMap[item.type] &&
-    props.cardTypeMap[item.type].component
-  ) {
-    cardComponent = props.cardTypeMap[item.type].component;
+export const getCustomComponentFromTypeMap = (props, itemType) => {
+  if (props.cardTypeMap && itemType && props.cardTypeMap[itemType]) {
+    return props.cardTypeMap[itemType];
   }
-  if (props.cardComponent && props.cardComponent.component) {
-    cardComponent = props.cardComponent.component;
+};
+
+export const getCardComponent = (props, item) => {
+  let cardComponent =
+    getCustomComponentFromTypeMap(props, item.type).CardComponent ||
+    DefaultCard;
+
+  if (props.cardComponent && props.cardComponent.CardComponent) {
+    cardComponent = props.cardComponent.CardComponent;
   }
 
   return cardComponent;
+};
+
+export const getContainerWrapperComponent = props => {
+  let ContainerWrapperComponent =
+    getCustomComponentFromTypeMap(props, props.type)
+      .ContainerWrapperComponent || DefaultContainerWrapper;
+
+  if (props.containerWrapperComponent && props.containerWrapperComponent) {
+    ContainerWrapperComponent = props.containerWrapperComponent;
+  }
+
+  return ContainerWrapperComponent;
 };
 
 export default {
