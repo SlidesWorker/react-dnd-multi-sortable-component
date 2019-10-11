@@ -9,6 +9,7 @@ import {
   createHandleRemoveCard,
   getCardComponent,
   getContainerWrapperComponent,
+  getContainerAccept,
   createDrop
 } from "../../Helper/ContainerHelper";
 import { createCardHover } from "../../Helper/CardHelper";
@@ -80,7 +81,8 @@ const ContainerCard = props => {
 
   // default wrapper
 
-  const ContainerWrapper = getContainerWrapperComponent(props);
+    const ContainerWrapper = getContainerWrapperComponent(props);
+    const accept = getContainerAccept(props);
 
   // connect hooks
   connectDropContainerTarget(connectDragSource(connectDropCardTarget(ref)));

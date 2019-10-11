@@ -9,6 +9,8 @@ import {
   createHandleMoveCard,
   createHandleRemoveCard,
   getCardComponent,
+  getContainerWrapperComponent,
+  getContainerAccept,
   createDrop
 } from "../Helper/ContainerHelper";
 
@@ -41,8 +43,8 @@ const Container = props => {
     }
   });
 
-  const ContainerWrapper =
-    props.containerWrapperComponent || DefaultContainerWrapper;
+  const ContainerWrapper = getContainerWrapperComponent(props);
+  const accept = getContainerAccept(props);
 
   connectDropTarget(ref);
   return (

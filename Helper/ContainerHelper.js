@@ -41,31 +41,43 @@ export const createDrop = (props, ref) => (dragObject, monitor) => {
   };
 };
 
-export const getCustomComponentFromTypeMap = (props, itemType) => {
+export const getComponentConfig = (props, itemType) => {
   if (props.cardTypeMap && itemType && props.cardTypeMap[itemType]) {
     return props.cardTypeMap[itemType];
   }
 };
 
 export const getCardComponent = (props, item) => {
-  let cardComponent =
-    getCustomComponentFromTypeMap(props, item.type).CardComponent ||
+  let CardComponent =
+    getComponentConfig(props, item.type).CardComponent ||
     DefaultCard;
 
-  if (props.cardComponent && props.cardComponent.CardComponent) {
-    cardComponent = props.cardComponent.CardComponent;
+  if (props.cardComponent) {
+    CardComponent = props.cardComponent;
   }
 
-  return cardComponent;
+  return CardComponent;
 };
 
 export const getContainerWrapperComponent = props => {
   let ContainerWrapperComponent =
-    getCustomComponentFromTypeMap(props, props.type)
+    getComponentConfig(props, props.type)
       .ContainerWrapperComponent || DefaultContainerWrapper;
 
-  if (props.containerWrapperComponent && props.containerWrapperComponent) {
+  if (props.containerWrapperComponent) {
     ContainerWrapperComponent = props.containerWrapperComponent;
+  }
+
+  return ContainerWrapperComponent;
+};
+
+export const getContainerAccept = props => {
+  let accept =
+    getComponentConfig(props, props.type)
+      .accept || [];
+
+  if (props.accept) {
+    ContainerWrapperComponent = props.accept;
   }
 
   return ContainerWrapperComponent;
@@ -77,5 +89,7 @@ export default {
   createHandleMoveCard,
   createHandleRemoveCard,
   getCardComponent,
+  getContainerWrapperComponent,
+  getContainerAccept,
   createDrop
 };
