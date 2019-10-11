@@ -77,10 +77,10 @@ export const getContainerAccept = props => {
       .accept || [];
 
   if (props.accept) {
-    ContainerWrapperComponent = props.accept;
+    accept = props.accept;
   }
 
-  return ContainerWrapperComponent;
+  return accept;
 };
 
 export default {
