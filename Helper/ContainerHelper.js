@@ -42,15 +42,24 @@ export const createDrop = (props, ref) => (dragObject, monitor) => {
 };
 
 export const getComponentConfig = (props, itemType) => {
-  if (props.cardTypeMap && itemType && props.cardTypeMap[itemType]) {
+  if (hasComponentConfig(itemType)) {
     return props.cardTypeMap[itemType];
   }
 };
 
+export const hasComponentConfig = (props, itemType) => {
+  return props.cardTypeMap && itemType && props.cardTypeMap[itemType];
+};
+
 export const getCardComponent = (props, item) => {
-  let CardComponent =
-    getComponentConfig(props, item.type).CardComponent ||
-    DefaultCard;
+  let CardComponent = DefaultCard;
+  if (hasComponentConfig(props, item)) {
+    const config = getComponentConfig(props, item.type);
+
+    if (config.CardComponent) {
+      CardComponent = config.CardComponent;
+    }
+  }
 
   if (props.cardComponent) {
     CardComponent = props.cardComponent;
@@ -60,27 +69,38 @@ export const getCardComponent = (props, item) => {
 };
 
 export const getContainerWrapperComponent = props => {
-  let ContainerWrapperComponent =
-    getComponentConfig(props, props.type)
-      .ContainerWrapperComponent || DefaultContainerWrapper;
+    let ContainerWrapperComponent = DefaultContainerWrapper;
+    if (hasComponentConfig(props, item)) {
+      const config = getComponentConfig(props, item.type);
 
-  if (props.containerWrapperComponent) {
-    ContainerWrapperComponent = props.containerWrapperComponent;
-  }
+      if (config.ContainerWrapperComponent) {
+        ContainerWrapperComponent = config.ContainerWrapperComponent;
+      }
+    }
 
-  return ContainerWrapperComponent;
+    if (props.cardComponent) {
+      ContainerWrapperComponent = props.containerWrapperComponent;
+    }
+
+    return ContainerWrapperComponent;
 };
 
 export const getContainerAccept = props => {
-  let accept =
-    getComponentConfig(props, props.type)
-      .accept || [];
+  let accept = DefaultContainerWrapper;
+  if (hasComponentConfig(props, item)) {
+    const config = getComponentConfig(props, item.type);
 
-  if (props.accept) {
+    if (config.accept) {
+      accept = config.accept;
+    }
+  }
+
+  if (props.cardComponent) {
     accept = props.accept;
   }
 
   return accept;
+
 };
 
 export default {
