@@ -68,10 +68,10 @@ export const getCardComponent = (props, item) => {
   return CardComponent;
 };
 
-export const getContainerWrapperComponent = props => {
+export const getContainerWrapperComponent = (props) => {
     let ContainerWrapperComponent = DefaultContainerWrapper;
-    if (hasComponentConfig(props, item)) {
-      const config = getComponentConfig(props, item.type);
+    if (hasComponentConfig(props, props.type)) {
+      const config = getComponentConfig(props, props.type);
 
       if (config.ContainerWrapperComponent) {
         ContainerWrapperComponent = config.ContainerWrapperComponent;
@@ -87,8 +87,8 @@ export const getContainerWrapperComponent = props => {
 
 export const getContainerAccept = props => {
   let accept = DefaultContainerWrapper;
-  if (hasComponentConfig(props, item)) {
-    const config = getComponentConfig(props, item.type);
+  if (hasComponentConfig(props, props.type)) {
+    const config = getComponentConfig(props, props.type);
 
     if (config.accept) {
       accept = config.accept;
