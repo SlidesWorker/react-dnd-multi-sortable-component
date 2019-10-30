@@ -31,18 +31,18 @@ export const createHandleRemoveCard = (setState, props) => item => {
 };
 
 export const createDrop = (props, ref) => (dragObject, monitor) => {
-  if (dragObject.listId !== props.uuid) {
+  if (dragObject.listId !== props.UUID) {
     props.addItems(dragObject);
   }
 
   return {
-    move: props.uuid === dragObject.listId,
-    listId: props.uuid
+    move: props.UUID === dragObject.listId,
+    listId: props.UUID
   };
 };
 
 export const getComponentConfig = (props, itemType) => {
-  if (hasComponentConfig(itemType)) {
+  if (hasComponentConfig(props, itemType)) {
     return props.cardTypeMap[itemType];
   }
 };

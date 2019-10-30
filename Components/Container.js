@@ -52,15 +52,15 @@ const Container = props => {
       {items.map((item, index) => {
         const itemProps = {
           ...item,
-          key: item.uuid,
           index,
-          listId: props.uuid,
+          listId: props.UUID,
           cardTypeMap: props.cardTypeMap
         };
         const CardComponent = getCardComponent(props, item);
 
         return (
           <CardComponent
+            key={item.UUID}
             {...itemProps}
             onRemoveCard={handleRemoveCard}
             onMoveCard={handleMoveCard}
