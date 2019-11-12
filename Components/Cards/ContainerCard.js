@@ -39,6 +39,12 @@ const createDragSpec = props => ({
 
 const ContainerCard = props => {
   const ref = useRef(null);
+  let initItems = [];
+  if (props.items && props.items.length >= 1) {
+    initItems = props.items;
+  }
+  console.log('ContainerCard', initItems);
+
   const [items, setItem] = useState(refreshIndex(props.items));
 
   // create Handle function
@@ -69,6 +75,7 @@ const ContainerCard = props => {
     type: props.type,
     ...props
   };
+  console.log('ContainerCard', item);
 
   // drag source
   const [{ isDragging }, connectDragSource] = useDrag({
@@ -103,6 +110,8 @@ const ContainerCard = props => {
           cardTypeMap: props.cardTypeMap
         };
         const CardComponent = getCardComponent(props, item);
+
+        console.log('ContainerCard', item);
 
         return (
           <CardComponent

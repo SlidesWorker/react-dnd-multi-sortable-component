@@ -4,6 +4,10 @@ import DefaultContainerWrapper from "../Components/ContainerWrapper";
 import R from "ramda";
 
 export const refreshIndex = list => {
+  if (list === undefined || list === null) {
+    return [];
+  }
+
   return list.map((currentValue, index) => ({
     ...currentValue,
     index
@@ -53,7 +57,7 @@ export const hasComponentConfig = (props, itemType) => {
 
 export const getCardComponent = (props, item) => {
   let CardComponent = DefaultCard;
-  if (hasComponentConfig(props, item)) {
+  if (hasComponentConfig(props, item.type)) {
     const config = getComponentConfig(props, item.type);
 
     if (config.CardComponent) {
@@ -64,6 +68,8 @@ export const getCardComponent = (props, item) => {
   if (props.cardComponent) {
     CardComponent = props.cardComponent;
   }
+
+  console.log('getCardComponent', CardComponent);
 
   return CardComponent;
 };

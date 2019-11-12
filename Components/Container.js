@@ -25,6 +25,12 @@ const createDropSpec = (props, ref) => ({
 
 const Container = props => {
   const ref = useRef(null);
+  let initItems = [];
+  if (props.items && props.items.length >= 1) {
+    initItems = props.items;
+  }
+  console.log('Container', initItems);
+
   const [items, setItem] = useState(refreshIndex(props.items));
 
   const addItems = createAddItems(setItem, props);
@@ -51,7 +57,6 @@ const Container = props => {
     <ContainerWrapper {...props} ref={ref}>
       {items.map((item, index) => {
         const itemProps = {
-          ...item,
           index,
           listId: props.UUID,
           cardTypeMap: props.cardTypeMap
@@ -61,6 +66,7 @@ const Container = props => {
         return (
           <CardComponent
             key={item.UUID}
+            UUID={item.UUID}
             {...itemProps}
             onRemoveCard={handleRemoveCard}
             onMoveCard={handleMoveCard}
