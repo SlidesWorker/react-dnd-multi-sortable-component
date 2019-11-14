@@ -37,9 +37,12 @@ const Container = props => {
   const handleMoveCard = createHandleMoveCard(setItem, props);
   const handleRemoveCard = createHandleRemoveCard(setItem, props);
 
+  const ContainerWrapper = getContainerWrapperComponent(props);
+  const accept = getContainerAccept(props);
+
   const [, connectDropTarget] = useDrop({
     ...createDropSpec({ ...props, addItems }, ref),
-    accept: props.accept,
+    accept,
     collect: monitor => {
       return {
         isOver: monitor.isOver(),
@@ -48,9 +51,6 @@ const Container = props => {
       };
     }
   });
-
-  const ContainerWrapper = getContainerWrapperComponent(props);
-  const accept = getContainerAccept(props);
 
   connectDropTarget(ref);
   return (
@@ -70,7 +70,7 @@ const Container = props => {
             {...itemProps}
             onRemoveCard={handleRemoveCard}
             onMoveCard={handleMoveCard}
-            parentAccept={props.accept}
+            parentAccept={accept}
           />
         );
       })}

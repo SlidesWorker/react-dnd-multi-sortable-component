@@ -20,14 +20,15 @@ const createDragSpec = props => ({
 
 const Card = props => {
   const ref = useRef(null);
-  const [, connectDropTarget] = useDrop({
-    accept: props.parentAccept,
-    ...createDropSpec(props, ref)
-  });
   const item = {
     type: props.type,
     ...props
   };
+  console.log("Card", props.parentAccept, item.type);
+  const [, connectDropTarget] = useDrop({
+    accept: props.parentAccept,
+    ...createDropSpec(props, ref)
+  });
   const [{ isDragging }, connectDragSource] = useDrag({
     item,
     ...createDragSpec(props),
@@ -38,6 +39,7 @@ const Card = props => {
   const CardWrapper = props.cardWrapper || DefaultCardWrapper;
 
   connectDragSource(connectDropTarget(ref));
+  console.log("Card.render", props.parentAccept, item.type);
   return <CardWrapper {...props} ref={ref} isDragging={isDragging} />;
 };
 

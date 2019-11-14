@@ -52,10 +52,14 @@ const ContainerCard = props => {
   const handleMoveCard = createHandleMoveCard(setItem, props);
   const handleRemoveCard = createHandleRemoveCard(setItem, props);
 
+  // default wrapper
+  const ContainerWrapper = getContainerWrapperComponent(props);
+  const accept = getContainerAccept(props);
+
   // drop Card target
   const [containerWrapperProps, connectDropCardTarget] = useDrop({
     ...createDropCardSpec({ ...props, addItems }, ref),
-    accept: [props.accept],
+    accept,
     collect: monitor => {
       return {
         isOver: monitor.isOver(),
@@ -75,7 +79,7 @@ const ContainerCard = props => {
     type: props.type,
     ...props
   };
-  console.log('ContainerCard', item);
+  console.log('ContainerCard.render', item.type);
 
   // drag source
   const [{ isDragging }, connectDragSource] = useDrag({
@@ -86,13 +90,9 @@ const ContainerCard = props => {
     })
   });
 
-  // default wrapper
-
-    const ContainerWrapper = getContainerWrapperComponent(props);
-    const accept = getContainerAccept(props);
-
   // connect hooks
   connectDropContainerTarget(connectDragSource(connectDropCardTarget(ref)));
+  console.log("ContainerCard.render.return", props.parentAccept, item.type);
 
   // render
   return (
@@ -111,7 +111,7 @@ const ContainerCard = props => {
         };
         const CardComponent = getCardComponent(props, item);
 
-        console.log('ContainerCard', item);
+        console.log('ContainerCard.sub', item);
 
         return (
           <CardComponent
@@ -119,7 +119,7 @@ const ContainerCard = props => {
             {...itemProps}
             onRemoveCard={handleRemoveCard}
             onMoveCard={handleMoveCard}
-            parentAccept={props.accept}
+            parentAccept={accept}
           />
         );
       })}

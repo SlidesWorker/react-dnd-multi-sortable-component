@@ -1,7 +1,7 @@
+import * as R from 'ramda';
+
 import DefaultCard from "../Components/Cards/Card";
 import DefaultContainerWrapper from "../Components/ContainerWrapper";
-
-import R from "ramda";
 
 export const refreshIndex = list => {
   if (list === undefined || list === null) {
