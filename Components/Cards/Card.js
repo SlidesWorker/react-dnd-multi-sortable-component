@@ -4,6 +4,10 @@ import { useDrag, useDrop } from "react-dnd";
 import DefaultCardWrapper from "./CardWrapper";
 import { createCardHover } from "../../Helper/CardHelper";
 
+import {
+  getTypeMapper
+} from "../../Helper/ContainerHelper";
+
 const createDropSpec = (props, ref) => ({
   hover: createCardHover(props, ref)
 });
@@ -21,8 +25,8 @@ const createDragSpec = props => ({
 const Card = props => {
   const ref = useRef(null);
   const item = {
-    type: props.type,
-    ...props
+    ...props,
+    type: props.type
   };
   console.log("Card", props.parentAccept, item.type);
   const [, connectDropTarget] = useDrop({

@@ -11,7 +11,8 @@ import {
   getCardComponent,
   getContainerWrapperComponent,
   getContainerAccept,
-  createDrop
+  createDrop,
+  getTypeMapper
 } from "../Helper/ContainerHelper";
 
 const canDrop = (item, monitor) => {
@@ -37,6 +38,7 @@ const Container = props => {
   const handleMoveCard = createHandleMoveCard(setItem, props);
   const handleRemoveCard = createHandleRemoveCard(setItem, props);
 
+  const typeMapper = getTypeMapper(props);
   const ContainerWrapper = getContainerWrapperComponent(props);
   const accept = getContainerAccept(props);
 
@@ -57,11 +59,12 @@ const Container = props => {
     <ContainerWrapper {...props} ref={ref}>
       {items.map((item, index) => {
         const itemProps = {
+          type: typeMapper(item),
           index,
           listId: props.UUID,
           cardTypeMap: props.cardTypeMap
         };
-        const CardComponent = getCardComponent(props, item);
+        const CardComponent = getCardComponent(itemProps, item);
 
         return (
           <CardComponent
@@ -71,6 +74,7 @@ const Container = props => {
             onRemoveCard={handleRemoveCard}
             onMoveCard={handleMoveCard}
             parentAccept={accept}
+            typeMapper={typeMapper}
           />
         );
       })}

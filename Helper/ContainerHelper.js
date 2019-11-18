@@ -92,7 +92,7 @@ export const getContainerWrapperComponent = (props) => {
 };
 
 export const getContainerAccept = props => {
-  let accept = DefaultContainerWrapper;
+  let accept = false;
   if (hasComponentConfig(props, props.type)) {
     const config = getComponentConfig(props, props.type);
 
@@ -109,6 +109,14 @@ export const getContainerAccept = props => {
 
 };
 
+const typeMapper = props => {
+  return props.type;
+}
+
+export const getTypeMapper = props => {
+  return props.typeMapper || typeMapper;
+}
+
 export default {
   refreshIndex,
   createAddItems,
@@ -117,5 +125,6 @@ export default {
   getCardComponent,
   getContainerWrapperComponent,
   getContainerAccept,
+  getTypeMapper,
   createDrop
 };

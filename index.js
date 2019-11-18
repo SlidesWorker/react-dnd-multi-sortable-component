@@ -6,6 +6,8 @@ import Container from "./Components/Container";
 import ContainerWrapper from "./Components/ContainerWrapper";
 import Provider from "./Components/Provider";
 
+import ContainerHelper from "./Helper/ContainerHelper";
+
 export default {
   Card,
   CardWrapper,
@@ -13,5 +15,6 @@ export default {
   ContainerCardWrapper,
   Container,
   ContainerWrapper,
-  Provider
+  Provider,
+  ContainerHelper
 };
