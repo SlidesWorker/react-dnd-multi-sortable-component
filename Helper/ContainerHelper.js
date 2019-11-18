@@ -3,19 +3,33 @@ import * as R from 'ramda';
 import DefaultCard from "../Components/Cards/Card";
 import DefaultContainerWrapper from "../Components/ContainerWrapper";
 
-export const refreshIndex = list => {
+export const refreshIndex = (list, updateItemPosition) => {
   if (list === undefined || list === null) {
     return [];
   }
 
-  return list.map((currentValue, index) => ({
-    ...currentValue,
-    index
-  }));
+  return list.map((currentValue, index) => {
+
+    const item = {
+      ...currentValue,
+      index
+    };
+
+    if (updateItemPosition) {
+      updateItemPosition(item);
+    }
+    return item;
+  });
 };
 
 export const createAddItems = (setState, props) => newItem => {
-  setState(oldItems => refreshIndex([...oldItems, newItem]));
+  setState(oldItems => {
+    const newState = refreshIndex([...oldItems, newItem]);
+    if (props.handleItemAdd) {
+      props.handleItemAdd(newItem);
+    }
+    return newState;
+  });
 };
 
 export const createHandleMoveCard = (setState, props) => (
@@ -23,13 +37,25 @@ export const createHandleMoveCard = (setState, props) => (
   hoverIndex
 ) => {
   setState(oldItems => {
-    return R.move(dragIndex, hoverIndex, oldItems);
+    const updateItemPosition = props.updateItemPosition || false;
+
+    let newState = refreshIndex(R.move(dragIndex, hoverIndex, oldItems), updateItemPosition);
+
+    const item = newState[hoverIndex];
+    if (props.handleItemMove) {
+      props.handleItemMove(item);
+    }
+    return newState;
   });
 };
 
 export const createHandleRemoveCard = (setState, props) => item => {
   setState(oldItems => {
-    return refreshIndex(R.remove(item.index, 1, oldItems));
+    const newState = refreshIndex(R.remove(item.index, 1, oldItems));
+    if (props.handleItemRemove) {
+      props.handleItemRemove(item);
+    }
+    return newState;
   });
   return true;
 };
