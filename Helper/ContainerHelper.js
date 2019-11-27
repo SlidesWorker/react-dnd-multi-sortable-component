@@ -95,7 +95,7 @@ export const getCardComponent = (props, item) => {
     CardComponent = props.cardComponent;
   }
 
-  console.log('getCardComponent', CardComponent);
+  // console.log('getCardComponent', CardComponent);
 
   return CardComponent;
 };
