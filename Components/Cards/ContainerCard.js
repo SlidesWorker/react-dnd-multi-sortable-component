@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 import { useDrop, useDrag } from "react-dnd";
+import * as R from "ramda";
 
 import {
   refreshIndex,
@@ -44,9 +45,22 @@ const ContainerCard = props => {
   if (props.items && props.items.length >= 1) {
     initItems = props.items;
   }
-  console.log('ContainerCard', initItems);
+  // console.log('ContainerCard', initItems);
 
   const [items, setItem] = useState(refreshIndex(props.items));
+
+  useEffect(() => {
+    // console.log(
+    //   "useEffect",
+    //   items.map((item) => (item.UUID)),
+    //   props.items.map((item) => (item.UUID)),
+    //   R.equals(
+    //     items.map((item) => (item.UUID)),
+    //     props.items.map((item) => (item.UUID))
+    //   )
+    // );
+    setItem(props.items);
+  }, [props.items]);
 
   // create Handle function
   const addItems = createAddItems(setItem, props);
@@ -81,7 +95,7 @@ const ContainerCard = props => {
     type: typeMapper(props),
     ...props
   };
-  console.log('ContainerCard.render', item.type);
+  // console.log('ContainerCard.render', item.type);
 
   // drag source
   const [{ isDragging }, connectDragSource] = useDrag({
@@ -94,7 +108,7 @@ const ContainerCard = props => {
 
   // connect hooks
   connectDropContainerTarget(connectDragSource(connectDropCardTarget(ref)));
-  console.log("ContainerCard.render.return", props.parentAccept, item.type);
+  // console.log("ContainerCard.render.return", props.parentAccept, item.type);
 
   // render
   return (
@@ -103,6 +117,7 @@ const ContainerCard = props => {
       {...containerWrapperProps}
       ref={ref}
       isDragging={isDragging}
+      accept={accept}
     >
       {items.map((item, index) => {
         const itemProps = {
@@ -114,7 +129,7 @@ const ContainerCard = props => {
         };
         const CardComponent = getCardComponent(itemProps, item);
 
-        console.log('ContainerCard.sub', props, item, CardComponent);
+        // console.log('ContainerCard.sub', props, item, CardComponent);
 
         return (
           <CardComponent

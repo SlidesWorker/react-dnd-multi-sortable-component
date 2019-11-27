@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 import { useDrop } from "react-dnd";
+import * as R from "ramda";
 
 import DefaultContainerWrapper from "./ContainerWrapper";
 import {
@@ -30,9 +31,22 @@ const Container = props => {
   if (props.items && props.items.length >= 1) {
     initItems = props.items;
   }
-  console.log('Container', initItems);
 
   const [items, setItem] = useState(refreshIndex(props.items));
+
+
+  useEffect(() => {
+    // console.log(
+    //   "useEffect",
+    //   items.map((item) => (item.UUID)),
+    //   props.items.map((item) => (item.UUID)),
+    //   R.equals(
+    //     items.map((item) => (item.UUID)),
+    //     props.items.map((item) => (item.UUID))
+    //   )
+    // );
+    setItem(props.items);
+  }, [props.items]);
 
   const addItems = createAddItems(setItem, props);
   const handleMoveCard = createHandleMoveCard(setItem, props);
@@ -56,7 +70,7 @@ const Container = props => {
 
   connectDropTarget(ref);
   return (
-    <ContainerWrapper {...props} ref={ref}>
+    <ContainerWrapper {...props} ref={ref} accept={accept}>
       {items.map((item, index) => {
         const itemProps = {
           type: typeMapper(item),
