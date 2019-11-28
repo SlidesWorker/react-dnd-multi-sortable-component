@@ -36,15 +36,15 @@ const Container = props => {
 
 
   useEffect(() => {
-    // console.log(
-    //   "useEffect",
-    //   items.map((item) => (item.UUID)),
-    //   props.items.map((item) => (item.UUID)),
-    //   R.equals(
-    //     items.map((item) => (item.UUID)),
-    //     props.items.map((item) => (item.UUID))
-    //   )
-    // );
+    console.log(
+      "useEffect",
+      items.map((item) => (item.UUID)),
+      props.items.map((item) => (item.UUID)),
+      R.equals(
+        items.map((item) => (item.UUID)),
+        props.items.map((item) => (item.UUID))
+      )
+    );
     setItem(props.items);
   }, [props.items]);
 

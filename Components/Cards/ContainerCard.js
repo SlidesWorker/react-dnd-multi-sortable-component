@@ -50,15 +50,15 @@ const ContainerCard = props => {
   const [items, setItem] = useState(refreshIndex(props.items));
 
   useEffect(() => {
-    // console.log(
-    //   "useEffect",
-    //   items.map((item) => (item.UUID)),
-    //   props.items.map((item) => (item.UUID)),
-    //   R.equals(
-    //     items.map((item) => (item.UUID)),
-    //     props.items.map((item) => (item.UUID))
-    //   )
-    // );
+    console.log(
+      "useEffect",
+      items.map((item) => (item.UUID)),
+      props.items.map((item) => (item.UUID)),
+      R.equals(
+        items.map((item) => (item.UUID)),
+        props.items.map((item) => (item.UUID))
+      )
+    );
     setItem(props.items);
   }, [props.items]);
 
