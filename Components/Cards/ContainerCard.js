@@ -146,4 +146,6 @@ const ContainerCard = props => {
   );
 };
 
+ContainerCard.displayName = "ContainerCard";
+
 export default ContainerCard;
