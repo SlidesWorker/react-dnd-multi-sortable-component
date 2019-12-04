@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 
-import DefaultCard from "../Components/Cards/Card";
-import DefaultContainerWrapper from "../Components/ContainerWrapper";
+import DefaultCard from '../Components/Cards/Card';
+import DefaultContainerWrapper from '../Components/ContainerWrapper';
 
 export const refreshIndex = (list, updateItemPosition) => {
   if (list === undefined || list === null) {
@@ -9,7 +9,6 @@ export const refreshIndex = (list, updateItemPosition) => {
   }
 
   return list.map((currentValue, index) => {
-
     const item = {
       ...currentValue,
       index
@@ -22,9 +21,9 @@ export const refreshIndex = (list, updateItemPosition) => {
   });
 };
 
-export const createAddItems = (setState, props) => newItem => {
+export const createAddItems = (setState, props) => (newItem) => {
   console.log('add new item to container', newItem, props);
-  setState(oldItems => {
+  setState((oldItems) => {
     const newState = refreshIndex([...oldItems, newItem]);
     if (props.handleItemAdd) {
       props.handleItemAdd(newItem);
@@ -37,10 +36,10 @@ export const createHandleMoveCard = (setState, props) => (
   dragIndex,
   hoverIndex
 ) => {
-  setState(oldItems => {
+  setState((oldItems) => {
     const updateItemPosition = props.updateItemPosition || false;
 
-    let newState = refreshIndex(R.move(dragIndex, hoverIndex, oldItems), updateItemPosition);
+    const newState = refreshIndex(R.move(dragIndex, hoverIndex, oldItems), updateItemPosition);
 
     const item = newState[hoverIndex];
     if (props.handleItemMove) {
@@ -50,8 +49,9 @@ export const createHandleMoveCard = (setState, props) => (
   });
 };
 
-export const createHandleRemoveCard = (setState, props) => item => {
-  setState(oldItems => {
+export const createHandleRemoveCard = (setState, props) => (item) => {
+  setState((oldItems) => {
+    console.log('HandleRemoveCard', item.index, oldItems);
     const newState = refreshIndex(R.remove(item.index, 1, oldItems));
     if (props.handleItemRemove) {
       props.handleItemRemove(item);
@@ -78,9 +78,7 @@ export const getComponentConfig = (props, itemType) => {
   }
 };
 
-export const hasComponentConfig = (props, itemType) => {
-  return props.cardTypeMap && itemType && props.cardTypeMap[itemType];
-};
+export const hasComponentConfig = (props, itemType) => props.cardTypeMap && itemType && props.cardTypeMap[itemType];
 
 export const getCardComponent = (props, item) => {
   let CardComponent = DefaultCard;
@@ -102,23 +100,23 @@ export const getCardComponent = (props, item) => {
 };
 
 export const getContainerWrapperComponent = (props) => {
-    let ContainerWrapperComponent = DefaultContainerWrapper;
-    if (hasComponentConfig(props, props.type)) {
-      const config = getComponentConfig(props, props.type);
+  let ContainerWrapperComponent = DefaultContainerWrapper;
+  if (hasComponentConfig(props, props.type)) {
+    const config = getComponentConfig(props, props.type);
 
-      if (config.ContainerWrapperComponent) {
-        ContainerWrapperComponent = config.ContainerWrapperComponent;
-      }
+    if (config.ContainerWrapperComponent) {
+      ContainerWrapperComponent = config.ContainerWrapperComponent;
     }
+  }
 
-    if (props.cardComponent) {
-      ContainerWrapperComponent = props.containerWrapperComponent;
-    }
+  if (props.cardComponent) {
+    ContainerWrapperComponent = props.containerWrapperComponent;
+  }
 
-    return ContainerWrapperComponent;
+  return ContainerWrapperComponent;
 };
 
-export const getContainerAccept = props => {
+export const getContainerAccept = (props) => {
   let accept = false;
   if (hasComponentConfig(props, props.type)) {
     const config = getComponentConfig(props, props.type);
@@ -133,16 +131,11 @@ export const getContainerAccept = props => {
   }
 
   return accept;
-
 };
 
-const typeMapper = props => {
-  return props.type;
-}
+const typeMapper = props => props.type;
 
-export const getTypeMapper = props => {
-  return props.typeMapper || typeMapper;
-}
+export const getTypeMapper = props => props.typeMapper || typeMapper;
 
 export default {
   refreshIndex,
