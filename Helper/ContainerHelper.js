@@ -24,9 +24,10 @@ export const refreshIndex = (list, updateItemPosition) => {
 export const createAddItems = (setState, props) => (newItem) => {
   console.log('add new item to container', newItem, props);
   setState((oldItems) => {
+    const oldListUUID = newItem.listId;
     const newState = refreshIndex([...oldItems, newItem]);
     if (props.handleItemAdd) {
-      props.handleItemAdd(newItem);
+      props.handleItemAdd(newItem, oldListUUID);
     }
     return newState;
   });
