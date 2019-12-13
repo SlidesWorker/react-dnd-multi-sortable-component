@@ -1,11 +1,11 @@
 import React, { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
-import DefaultCardWrapper from "./CardWrapper";
 import { createCardHover } from "../../Helper/CardHelper";
 
 import {
-  getTypeMapper
+  getTypeMapper,
+  getCardComponent
 } from "../../Helper/ContainerHelper";
 
 const createDropSpec = (props, ref) => ({
@@ -40,7 +40,7 @@ const Card = props => {
       isDragging: monitor.isDragging()
     })
   });
-  const CardWrapper = props.cardWrapper || DefaultCardWrapper;
+  const CardWrapper = getCardComponent(props);
 
   connectDragSource(connectDropTarget(ref));
   // console.log("Card.render", props.parentAccept, item.type);

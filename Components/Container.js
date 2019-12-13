@@ -1,19 +1,24 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, {
+  useRef
+  //  useState,
+  //  useEffect
+} from "react";
 
 import { useDrop } from "react-dnd";
 import * as R from "ramda";
 
-import DefaultContainerWrapper from "./ContainerWrapper";
+// import DefaultContainerWrapper from "./ContainerWrapper";
 import {
-  refreshIndex,
-  createAddItems,
-  createHandleMoveCard,
-  createHandleRemoveCard,
-  getCardComponent,
+  //  refreshIndex,
+  //  createAddItems,
+  //  createHandleMoveCard,
+  //  createHandleRemoveCard,
+  // getCardComponent,
   getContainerWrapperComponent,
   getContainerAccept,
   createDrop,
-  getTypeMapper
+  getTypeMapper,
+  getDataContainerComponent
 } from "../Helper/ContainerHelper";
 
 const canDrop = (item, monitor) => {
@@ -27,6 +32,8 @@ const createDropSpec = (props, ref) => ({
 
 const Container = props => {
   const ref = useRef(null);
+  /*
+  // start moved to dataContainer
   let initItems = [];
   if (props.items && props.items.length >= 1) {
     initItems = props.items;
@@ -34,16 +41,12 @@ const Container = props => {
 
   const [items, setItem] = useState(refreshIndex(props.items));
 
-
   useEffect(() => {
     console.log(
       "useEffect",
-      items.map((item) => (item.UUID)),
-      props.items.map((item) => (item.UUID)),
-      R.equals(
-        items.map((item) => (item.UUID)),
-        props.items.map((item) => (item.UUID))
-      )
+      items.map(item => item.UUID),
+      props.items.map(item => item.UUID),
+      R.equals(items.map(item => item.UUID), props.items.map(item => item.UUID))
     );
     setItem(props.items);
   }, [props.items]);
@@ -51,13 +54,14 @@ const Container = props => {
   const addItems = createAddItems(setItem, props);
   const handleMoveCard = createHandleMoveCard(setItem, props);
   const handleRemoveCard = createHandleRemoveCard(setItem, props);
+  // end moved to dataContainer */
 
   const typeMapper = getTypeMapper(props);
   const ContainerWrapper = getContainerWrapperComponent(props);
   const accept = getContainerAccept(props);
 
   const [, connectDropTarget] = useDrop({
-    ...createDropSpec({ ...props, addItems }, ref),
+    ...createDropSpec(props, ref),
     accept,
     collect: monitor => {
       return {
@@ -71,22 +75,25 @@ const Container = props => {
   connectDropTarget(ref);
   return (
     <ContainerWrapper {...props} ref={ref} accept={accept}>
-      {items.map((item, index) => {
+      {props.items.map((item, index) => {
         const itemProps = {
           type: typeMapper(item),
           index,
           listId: props.UUID,
           cardTypeMap: props.cardTypeMap
         };
-        const CardComponent = getCardComponent(itemProps, item);
+        if (R.length(item.items) >= 1) {
+          itemProps.items = item.items;
+        }
+        const DataContainer = getDataContainerComponent(itemProps, item);
 
         return (
-          <CardComponent
+          <DataContainer
+            {...itemProps}
             key={item.UUID}
             UUID={item.UUID}
-            {...itemProps}
-            onRemoveCard={handleRemoveCard}
-            onMoveCard={handleMoveCard}
+            onRemoveCard={props.handleRemoveCard}
+            onMoveCard={props.handleMoveCard}
             parentAccept={accept}
             typeMapper={typeMapper}
           />

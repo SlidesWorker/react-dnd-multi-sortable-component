@@ -1,7 +1,9 @@
-import * as R from 'ramda';
+import * as R from "ramda";
 
-import DefaultCard from '../Components/Cards/Card';
-import DefaultContainerWrapper from '../Components/ContainerWrapper';
+import DefaultCard from "../Components/Cards/Card";
+import DefaultCardWrapper from "../Components/Cards/CardWrapper";
+import DefaultContainerWrapper from "../Components/ContainerWrapper";
+import DefaultDataContainerComponent from "../Components/DataContainer";
 
 export const refreshIndex = (list, updateItemPosition) => {
   if (list === undefined || list === null) {
@@ -21,9 +23,9 @@ export const refreshIndex = (list, updateItemPosition) => {
   });
 };
 
-export const createAddItems = (setState, props) => (newItem) => {
-  console.log('add new item to container', newItem, props);
-  setState((oldItems) => {
+export const createAddItems = (setState, props) => newItem => {
+  console.log("add new item to container", newItem, props);
+  setState(oldItems => {
     const oldListUUID = newItem.listId;
     const newState = refreshIndex([...oldItems, newItem]);
     if (props.handleItemAdd) {
@@ -37,10 +39,13 @@ export const createHandleMoveCard = (setState, props) => (
   dragIndex,
   hoverIndex
 ) => {
-  setState((oldItems) => {
+  setState(oldItems => {
     const updateItemPosition = props.updateItemPosition || false;
 
-    const newState = refreshIndex(R.move(dragIndex, hoverIndex, oldItems), updateItemPosition);
+    const newState = refreshIndex(
+      R.move(dragIndex, hoverIndex, oldItems),
+      updateItemPosition
+    );
 
     const item = newState[hoverIndex];
     if (props.handleItemMove) {
@@ -50,9 +55,9 @@ export const createHandleMoveCard = (setState, props) => (
   });
 };
 
-export const createHandleRemoveCard = (setState, props) => (item) => {
-  setState((oldItems) => {
-    console.log('HandleRemoveCard', item.index, oldItems);
+export const createHandleRemoveCard = (setState, props) => item => {
+  setState(oldItems => {
+    console.log("HandleRemoveCard", item.index, oldItems);
     const newState = refreshIndex(R.remove(item.index, 1, oldItems));
     if (props.handleItemRemove) {
       props.handleItemRemove(item);
@@ -79,7 +84,8 @@ export const getComponentConfig = (props, itemType) => {
   }
 };
 
-export const hasComponentConfig = (props, itemType) => props.cardTypeMap && itemType && props.cardTypeMap[itemType];
+export const hasComponentConfig = (props, itemType) =>
+  props.cardTypeMap && itemType && props.cardTypeMap[itemType];
 
 export const getCardComponent = (props, item) => {
   let CardComponent = DefaultCard;
@@ -95,12 +101,46 @@ export const getCardComponent = (props, item) => {
     CardComponent = props.cardComponent;
   }
 
-  // console.log('getCardComponent', CardComponent);
-
   return CardComponent;
 };
 
-export const getContainerWrapperComponent = (props) => {
+export const getCardWrapperComponent = (props, item) => {
+  let CardWrapperComponent = DefaultCardWrapper;
+  if (hasComponentConfig(props, item.type)) {
+    const config = getComponentConfig(props, item.type);
+
+    if (config.CardWrapperComponent) {
+      CardWrapperComponent = config.CardWrapperComponent;
+    }
+  }
+
+  if (props.cardWrapperComponent) {
+    CardWrapperComponent = props.cardWrapperComponent;
+  }
+
+  return CardWrapperComponent;
+};
+
+export const getDataContainerComponent = (props, item) => {
+  let DataContainerComponent = DefaultDataContainerComponent;
+  if (hasComponentConfig(props, item.type)) {
+    const config = getComponentConfig(props, item.type);
+
+    if (config.DataContainerComponent) {
+      DataContainerComponent = config.DataContainerComponent;
+    }
+
+    // console.log("getDataContainerComponent", config);
+  }
+
+  if (props.dataContainerComponent) {
+    DataContainerComponent = props.dataContainerComponent;
+  }
+
+  return DataContainerComponent;
+};
+
+export const getContainerWrapperComponent = props => {
   let ContainerWrapperComponent = DefaultContainerWrapper;
   if (hasComponentConfig(props, props.type)) {
     const config = getComponentConfig(props, props.type);
@@ -110,14 +150,14 @@ export const getContainerWrapperComponent = (props) => {
     }
   }
 
-  if (props.cardComponent) {
+  if (props.cardWrapper) {
     ContainerWrapperComponent = props.containerWrapperComponent;
   }
 
   return ContainerWrapperComponent;
 };
 
-export const getContainerAccept = (props) => {
+export const getContainerAccept = props => {
   let accept = false;
   if (hasComponentConfig(props, props.type)) {
     const config = getComponentConfig(props, props.type);
@@ -127,7 +167,7 @@ export const getContainerAccept = (props) => {
     }
   }
 
-  if (props.cardComponent) {
+  if (props.accept) {
     accept = props.accept;
   }
 
@@ -144,8 +184,10 @@ export default {
   createHandleMoveCard,
   createHandleRemoveCard,
   getCardComponent,
+  getCardWrapperComponent,
   getContainerWrapperComponent,
   getContainerAccept,
+  getDataContainerComponent,
   getTypeMapper,
   createDrop
 };
