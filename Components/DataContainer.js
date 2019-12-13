@@ -12,17 +12,9 @@ import {
   createHandleMoveCard,
   createHandleRemoveCard,
   getCardComponent
-  //  getCardComponent,
-  //  getContainerWrapperComponent,
-  //  getContainerAccept,
-  //  createDrop,
-  //  getTypeMapper
 } from "../Helper/ContainerHelper";
 
 const DataContainer = props => {
-  // const ref = useRef(null);
-  console.log("DataContainer", props);
-
   let initItems = [];
   if (props.items && props.items.length >= 1) {
     initItems = props.items;
