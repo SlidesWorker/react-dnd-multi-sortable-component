@@ -16,9 +16,6 @@ export const refreshIndex = (list, updateItemPosition) => {
       index
     };
 
-    if (updateItemPosition) {
-      updateItemPosition(item);
-    }
     return item;
   });
 };
