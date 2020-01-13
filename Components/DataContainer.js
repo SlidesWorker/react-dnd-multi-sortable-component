@@ -15,6 +15,7 @@ import {
 } from "../Helper/ContainerHelper";
 
 const DataContainer = props => {
+
   let initItems = [];
   if (props.items && props.items.length >= 1) {
     initItems = props.items;
@@ -38,7 +39,7 @@ const DataContainer = props => {
   const handleMoveCard = createHandleMoveCard(setItem, props);
   const handleRemoveCard = createHandleRemoveCard(setItem, props);
 
-  console.log("datacontainer.render", props);
+  console.log("DataContainer.render", props);
 
   return (
     <CardComponent

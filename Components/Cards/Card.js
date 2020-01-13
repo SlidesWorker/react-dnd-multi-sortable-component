@@ -28,7 +28,8 @@ const Card = props => {
     ...props,
     type: props.type
   };
-  console.log("Card", props.parentAccept, item.type);
+
+  console.log("Card.render", props.onMoveCard);
   const [, connectDropTarget] = useDrop({
     accept: props.parentAccept,
     ...createDropSpec(props, ref)
@@ -43,7 +44,6 @@ const Card = props => {
   const CardWrapper = getCardWrapperComponent(props, item);
 
   connectDragSource(connectDropTarget(ref));
-  console.log("Card.render", props.parentAccept, item.type);
   // return "test";
   return <CardWrapper {...props} ref={ref} isDragging={isDragging} />;
 };
