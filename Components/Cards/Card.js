@@ -29,7 +29,6 @@ const Card = props => {
     type: props.type
   };
 
-  console.log("Card.render", props.onMoveCard);
   const [, connectDropTarget] = useDrop({
     accept: props.parentAccept,
     ...createDropSpec(props, ref)
