@@ -77,6 +77,7 @@ const Container = props => {
     <ContainerWrapper {...props} ref={ref} accept={accept}>
       {props.items.map((item, index) => {
         const itemProps = {
+          typeMapper,
           type: typeMapper(item),
           index,
           listId: props.UUID,
