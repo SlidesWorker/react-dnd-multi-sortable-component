@@ -86,8 +86,10 @@ export const hasComponentConfig = (props, itemType) =>
 
 export const getCardComponent = (props, item) => {
   let CardComponent = DefaultCard;
-  if (hasComponentConfig(props, item.type)) {
-    const config = getComponentConfig(props, item.type);
+  // console.log('getCardComponent', props, item);
+  const itemType = getTypeMapper(props)(item);
+  if (hasComponentConfig(props, itemType)) {
+    const config = getComponentConfig(props, itemType);
 
     if (config.CardComponent) {
       CardComponent = config.CardComponent;
@@ -103,8 +105,9 @@ export const getCardComponent = (props, item) => {
 
 export const getCardWrapperComponent = (props, item) => {
   let CardWrapperComponent = DefaultCardWrapper;
-  if (hasComponentConfig(props, item.type)) {
-    const config = getComponentConfig(props, item.type);
+  const itemType = getTypeMapper(props)(item);
+  if (hasComponentConfig(props, itemType)) {
+    const config = getComponentConfig(props, itemType);
 
     if (config.CardWrapperComponent) {
       CardWrapperComponent = config.CardWrapperComponent;
@@ -120,8 +123,10 @@ export const getCardWrapperComponent = (props, item) => {
 
 export const getDataContainerComponent = (props, item) => {
   let DataContainerComponent = DefaultDataContainerComponent;
-  if (hasComponentConfig(props, item.type)) {
-    const config = getComponentConfig(props, item.type);
+  console.log('getDataContainerComponent', props, item);
+  const itemType = getTypeMapper(props)(item);
+  if (hasComponentConfig(props, itemType)) {
+    const config = getComponentConfig(props, itemType);
 
     if (config.DataContainerComponent) {
       DataContainerComponent = config.DataContainerComponent;
