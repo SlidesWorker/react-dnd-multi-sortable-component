@@ -86,7 +86,7 @@ const Container = props => {
         if (R.length(item.items) >= 1) {
           itemProps.items = item.items;
         }
-        console.log('before getDataContainerComponent', itemProps, item);
+        // console.log('before getDataContainerComponent', itemProps, item);
         const DataContainer = getDataContainerComponent(itemProps, item);
 
         return (

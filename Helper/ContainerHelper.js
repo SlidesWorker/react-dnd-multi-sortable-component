@@ -21,7 +21,7 @@ export const refreshIndex = (list, updateItemPosition) => {
 };
 
 export const createAddItems = (setState, props) => newItem => {
-  console.log("add new item to container", newItem, props);
+  // console.log("add new item to container", newItem, props);
   setState(oldItems => {
     const oldListUUID = newItem.listId;
     const newState = refreshIndex([...oldItems, newItem]);
@@ -123,7 +123,7 @@ export const getCardWrapperComponent = (props, item) => {
 
 export const getDataContainerComponent = (props, item) => {
   let DataContainerComponent = DefaultDataContainerComponent;
-  console.log('getDataContainerComponent', props, item);
+  // console.log('getDataContainerComponent', props, item);
   const itemType = getTypeMapper(props)(item);
   if (hasComponentConfig(props, itemType)) {
     const config = getComponentConfig(props, itemType);
