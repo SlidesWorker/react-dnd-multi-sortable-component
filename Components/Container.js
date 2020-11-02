@@ -31,7 +31,9 @@ const createDropSpec = (props, ref) => ({
 });
 
 const Container = props => {
+  console.log('Container', props);
   const ref = useRef(null);
+
   /*
   // start moved to dataContainer
   let initItems = [];
@@ -86,7 +88,7 @@ const Container = props => {
         if (R.length(item.items) >= 1) {
           itemProps.items = item.items;
         }
-        // console.log('before getDataContainerComponent', itemProps, item);
+        console.log('before getDataContainerComponent', itemProps, item);
         const DataContainer = getDataContainerComponent(itemProps, item);
 
         return (
